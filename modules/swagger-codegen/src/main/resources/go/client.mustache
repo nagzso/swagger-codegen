@@ -50,6 +50,10 @@ type service struct {
 	client *APIClient
 }
 
+type requestConfigurerFunc func(*http.Request)
+
+var NilRequestConfigurer requestConfigurerFunc = func(request *http.Request) {}
+
 // NewAPIClient creates a new API client. Requires a userAgent string describing your application.
 // optionally a custom http.Client to allow for advanced features such as caching.
 func NewAPIClient(cfg *Configuration) *APIClient {
@@ -166,7 +170,8 @@ func (c *APIClient) prepareRequest(
 	queryParams url.Values,
 	formParams url.Values,
 	fileName string,
-	fileBytes []byte) (localVarRequest *http.Request, err error) {
+	fileBytes []byte,
+	requestConfigurer requestConfigurerFunc) (localVarRequest *http.Request, err error) {
 
 	var body *bytes.Buffer
 
@@ -309,6 +314,8 @@ func (c *APIClient) prepareRequest(
 	for header, value := range c.cfg.DefaultHeader {
 		localVarRequest.Header.Add(header, value)
 	}
+
+	requestConfigurer(localVarRequest)
 
 	return localVarRequest, nil
 }
