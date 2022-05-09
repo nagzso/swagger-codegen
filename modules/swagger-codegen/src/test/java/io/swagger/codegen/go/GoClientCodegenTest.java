@@ -65,7 +65,7 @@ public class GoClientCodegenTest {
                 "\n" +
                 "type PetDto struct {\n" +
                 "\t// The creation timestamp\n" +
-                "\tCreatedAt time.Time `json:\"createdAt,omitempty\"`\n" +
+                "\tCreatedAt *time.Time `json:\"createdAt,omitempty\"`\n" +
                 "\t// The user who created\n" +
                 "\tCreatedBy *uuid.UUID `json:\"createdBy,omitempty\"`\n" +
                 "\t// The ID\n" +
